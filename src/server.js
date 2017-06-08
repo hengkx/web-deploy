@@ -3,20 +3,18 @@ var io = require('socket.io')();
 var ss = require('socket.io-stream');
 var fs = require('fs');
 var path = require('path');
-var adm_zip = require('adm-zip');
-// console.log(process.argv);
+var extract = require('extract-zip')
 
 io.on('connection', function (client) {
     ss(client).on('deploy', function (stream, data) {
         var filename = path.basename(data.name);
         // console.log(path.parse(data.name).name);
-        console.log(filename);
         console.log(data);
-
-        stream.pipe(fs.createWriteStream(filename));
+        const filepath = path.join('bak', filename);
+        if (!fs.existsSync('bak')) fs.mkdirSync('bak');
+        stream.pipe(fs.createWriteStream(filepath));
 
         const { size, key } = data;
-        console.log(size);
 
         var uploadedSize = 0;
 
@@ -31,11 +29,15 @@ io.on('connection', function (client) {
         });
 
         stream.on('end', function () {
-            var unzip = new adm_zip(filename);
-            unzip.extractAllTo(".", /*overwrite*/true);
+            extract(filepath, { dir: process.cwd() }, function (err) {
+                if (err) {
+                    client.emit('deploy_failed', err);
+                    console.log(err);
+                } else {
+                    client.emit('deploy');
+                }
+            })
         });
-        // var unzip = new adm_zip(filename);
-        // unzip.extractAllTo("adm/adm-unarchive/", /*overwrite*/true);
     });
 });
 
