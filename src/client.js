@@ -14,7 +14,7 @@ let filename = '';
 
 socket.on('connect', function () {
     console.log('connect');
-    filename = path.join(process.cwd(), `deploy ${moment().format('YYYYMMDDhhmmss')}.zip`);
+    filename = path.join(process.cwd(), `deploy ${moment().format('YYYYMMDDHHmmss')}.zip`);
     console.log(filename);
 
     // create a file to stream archive data to.
