@@ -1,0 +1,6 @@
+{
+    "delpoyPath": "app",
+    "key": "web-deploy",
+    "url": "http://localhost",
+    "port": 9000
+}

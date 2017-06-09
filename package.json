@@ -1,12 +1,24 @@
 {
   "name": "web-deploy",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "web deploy",
   "main": "src",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hengkx/web-deploy.git"
+  },
+  "keywords": [
+    "web",
+    "deploy"
+  ],
   "author": "Tom Xu",
+  "bugs": {
+    "url": "https://github.com/hengkx/web-deploy/issues"
+  },
+  "homepage": "https://github.com/hengkx/web-deploy#readme",
   "bin": {
     "deploy-server": "src/server.js",
     "deploy-client": "src/client.js"
@@ -15,6 +27,8 @@
   "dependencies": {
     "archiver": "^1.3.0",
     "extract-zip": "^1.6.5",
+    "moment": "^2.18.1",
+    "progress": "^2.0.0",
     "socket.io": "^2.0.2",
     "socket.io-client": "^2.0.2",
     "socket.io-stream": "^0.9.1",
