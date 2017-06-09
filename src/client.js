@@ -25,7 +25,7 @@ socket.on('connect', function () {
 
     // listen for all archive data to be written
     output.on('close', function () {
-        bar = new ProgressBar('  downloading [:bar] :rate/bps :percent :etas', {
+        bar = new ProgressBar('deploying [:bar] :rate/bps :percent :etas', {
             complete: '=',
             incomplete: ' ',
             width: 30,
