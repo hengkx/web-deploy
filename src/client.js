@@ -1,13 +1,14 @@
 #!/usr/bin/env node
-var io = require('socket.io-client');
-var path = require('path');
-var fs = require('fs');
-var ss = require('socket.io-stream');
-var archiver = require('archiver');
-var ProgressBar = require('progress');
-var moment = require('moment');
-var NodeRSA = require('node-rsa');
-var utils = require('./utils');
+const io = require('socket.io-client');
+const path = require('path');
+const fs = require('fs');
+const ss = require('socket.io-stream');
+const archiver = require('archiver');
+const ProgressBar = require('progress');
+const moment = require('moment');
+const NodeRSA = require('node-rsa');
+const chalk = require('chalk');
+const utils = require('./utils');
 
 const config = utils.config();
 const serverUrl = `${config.url}:${config.port}`;
@@ -19,7 +20,6 @@ let filename = '';
 socket.on('connect', function () {
   console.log('connect');
   filename = path.join(process.cwd(), `deploy ${moment().format('YYYYMMDDHHmmss')}.zip`);
-  console.log(filename);
 
   // create a file to stream archive data to.
   var output = fs.createWriteStream(filename);
@@ -36,12 +36,11 @@ socket.on('connect', function () {
       total: archive.pointer()
     });
     var stream = ss.createStream();
-    const size = archive.pointer();//fs.statSync(filename).size;
-
+    const size = archive.pointer();
     ss(socket).emit('deploy', stream, {
       name: filename,
       size,
-      token: config.token
+      token: utils.encrypt(config.token)
     });
 
     fs.createReadStream(filename).pipe(stream);
@@ -49,7 +48,8 @@ socket.on('connect', function () {
 
   // good practice to catch this error explicitly
   archive.on('error', function (err) {
-    console.log(err.message);
+    console.log(chalk.red(err));
+    process.exit(1);
     // throw err;
   });
 
@@ -78,12 +78,12 @@ socket.on('progress', (item) => {
 
 socket.on('deploy', function () {
   fs.unlinkSync(filename);
-  console.log('deploy success');
+  console.log(chalk.green('deploy success'));
   process.exit(0);
 });
 
 socket.on('deploy_failed', function (err) {
   fs.unlinkSync(filename);
-  console.log(err);
+  console.log(chalk.red(err));
   process.exit(1);
 });

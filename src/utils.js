@@ -1,6 +1,7 @@
 const NodeRSA = require('node-rsa');
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 
 function getConfig() {
   const configPath = path.join(process.cwd(), '.deploy');
@@ -14,14 +15,24 @@ function getConfig() {
   }
 }
 
-function decrypt(str) {
+function encrypt(str) {
   try {
-    const rsa = new NodeRSA(fs.readSync('private.pem', 'utf-8'), { encryptionScheme: 'pkcs1' });
-    return rsa.decrypt(str).toString();
+    const rsa = new NodeRSA(fs.readFileSync('public.pem', 'utf8'), { encryptionScheme: 'pkcs1' });
+    return rsa.encrypt(str, 'base64');
   } catch (error) {
-    console.error(error);
+    console.error(chalk.red(error.message));
   }
 }
 
 
-module.exports = { config: getConfig, decrypt };
+function decrypt(str) {
+  try {
+    const rsa = new NodeRSA(fs.readFileSync('private.pem', 'utf8'), { encryptionScheme: 'pkcs1' });
+    return rsa.decrypt(str, 'utf8');
+  } catch (error) {
+    console.error(chalk.red(error.message));
+  }
+}
+
+
+module.exports = { config: getConfig, decrypt, encrypt };

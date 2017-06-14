@@ -21,13 +21,10 @@ if (!fs.existsSync(privateKeyPath)) {
 const deployBakPath = 'delopy_bak';
 
 io.on('connection', function (client) {
-  console.log('object');
   ss(client).on('deploy', function (stream, data) {
     const { size, token } = data;
-    console.log('object');
-    const c = utils.decrypt(token);
-    console.log(c);
-    if (config.token !== token) {
+    const decryptToken = utils.decrypt(token);
+    if (!decryptToken || config.token !== decryptToken) {
       return client.emit('deploy_failed', 'key invalid');
     }
 
