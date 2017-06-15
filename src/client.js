@@ -8,9 +8,26 @@ const ProgressBar = require('progress');
 const moment = require('moment');
 const NodeRSA = require('node-rsa');
 const chalk = require('chalk');
+const invariant = require('invariant');
+const program = require('commander');
+const isString = require('lodash/isString');
+const isNumber = require('lodash/isNumber');
 const utils = require('./utils');
 
-const config = utils.config();
+program
+  .version(require('../package').version, '-v, --version')
+  .option('--config [config]', 'Specify the configuration file, default .deploy')
+  .parse(process.argv);
+
+
+const config = utils.config(program.config || '.deploy');
+invariant(
+  isString(config.url),
+  'Expected url to be a string'
+);
+invariant(isNumber(config.port),
+  'Expected port to be a number'
+);
 const serverUrl = `${config.url}:${config.port}`;
 console.log(serverUrl);
 var socket = io.connect(serverUrl);

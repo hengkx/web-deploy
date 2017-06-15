@@ -9,7 +9,7 @@ $ npm install web-deploy -g
 ``` json
 {
     "delpoyPath": "app",
-    "key": "web-deploy",
+    "token": "web-deploy",
     "url": "http://localhost",
     "port": 9000
 }
@@ -17,3 +17,8 @@ $ npm install web-deploy -g
 * server side execute command `deploy-server`
 
 * client side execute command `deploy-client`
+
+### Specify the configuration file, default `.deploy`
+``` bash
+$ deploy-client --config .deploy
+```

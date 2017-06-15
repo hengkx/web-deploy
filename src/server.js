@@ -5,10 +5,21 @@ const ss = require('socket.io-stream');
 const fs = require('fs');
 const path = require('path');
 const extract = require('extract-zip')
-const utils = require('./utils');
 const NodeRSA = require('node-rsa');
+const randomstring = require('randomstring');
+const chalk = require('chalk');
+const utils = require('./utils');
 
-const config = utils.config();
+const configPath = path.join(process.cwd(), '.deploy');
+if (!fs.existsSync(configPath)) {
+  const config = {
+    delpoyPath: "app",
+    token: randomstring.generate(),
+    url: "http://localhost",
+    port: 9000
+  };
+  fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+}
 
 const privateKeyPath = path.join(process.cwd(), 'private.pem');
 const publicKeyPath = path.join(process.cwd(), 'public.pem');
@@ -17,6 +28,8 @@ if (!fs.existsSync(privateKeyPath)) {
   fs.writeFileSync(privateKeyPath, key.exportKey('private'));
   fs.writeFileSync(publicKeyPath, key.exportKey('public'));
 }
+
+const config = utils.config();
 
 const deployBakPath = 'delopy_bak';
 
@@ -58,5 +71,6 @@ io.on('connection', function (client) {
     });
   });
 });
-
-server.listen(config.port || 9000);
+const port = config.port || 9000;
+console.log(chalk.blue(`listen ${port}`));
+server.listen(port);
