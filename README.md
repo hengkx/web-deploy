@@ -5,16 +5,7 @@
 $ npm install web-deploy -g
 ```
 
-### create `.deploy` file
-``` json
-{
-    "delpoyPath": "app",
-    "token": "web-deploy",
-    "url": "http://localhost",
-    "port": 9000
-}
-```
-* server side execute command `deploy-server`
+* server side execute command `deploy-server`. copy genarate `.deploy` and `public.pem` file to client.
 
 * client side execute command `deploy-client`
 
