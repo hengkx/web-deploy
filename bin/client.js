@@ -12,7 +12,7 @@ const invariant = require('invariant');
 const program = require('commander');
 const isString = require('lodash/isString');
 const isNumber = require('lodash/isNumber');
-const utils = require('./utils');
+const utils = require('../lib/utils');
 
 program
   .version(require('../package').version, '-v, --version')
@@ -29,7 +29,7 @@ invariant(isNumber(config.port),
   'Expected port to be a number'
 );
 const serverUrl = `${config.url}:${config.port}`;
-console.log(serverUrl);
+
 var socket = io.connect(serverUrl);
 var bar = null;
 let filename = '';

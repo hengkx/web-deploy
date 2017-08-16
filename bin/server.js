@@ -8,7 +8,7 @@ const extract = require('extract-zip')
 const NodeRSA = require('node-rsa');
 const randomstring = require('randomstring');
 const chalk = require('chalk');
-const utils = require('./utils');
+const utils = require('../lib/utils');
 
 const configPath = path.join(process.cwd(), '.deploy');
 if (!fs.existsSync(configPath)) {
