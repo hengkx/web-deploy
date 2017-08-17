@@ -13,7 +13,7 @@ const utils = require('../lib/utils');
 const configPath = path.join(process.cwd(), '.deploy');
 if (!fs.existsSync(configPath)) {
   const config = {
-    delpoyPath: "app",
+    deployPath: "app",
     token: randomstring.generate(),
     url: "http://localhost",
     port: 9000
