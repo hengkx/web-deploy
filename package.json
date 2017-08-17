@@ -1,6 +1,6 @@
 {
   "name": "web-deploy",
-  "version": "0.3.0-dev.6",
+  "version": "0.3.0-dev.7",
   "description": "web deploy",
   "main": "lib",
   "scripts": {
