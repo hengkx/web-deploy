@@ -73,7 +73,11 @@ socket.on('connect', function () {
   // pipe archive data to the file
   archive.pipe(output);
   // append files from a directory
-  archive.directory(path.join(process.cwd(), config.delpoyPath), '/');
+  if (fs.existsSync(config.delpoyPath)) {
+    archive.directory(config.delpoyPath, '/');
+  } else {
+    archive.directory(path.join(process.cwd(), config.delpoyPath), '/');
+  }
   // finalize the archive (ie we are done appending files but streams have to finish yet)
   archive.finalize();
 });
